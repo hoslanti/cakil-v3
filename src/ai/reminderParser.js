@@ -59,11 +59,11 @@ Eğer hatırlatıcı/alarm isteği VARSA şunu döndür:
   "isReminder": true,
   "title": "Hatırlatma konusu (Örn: 'Fırındaki Yemek', 'Vize Sınavı', 'Arama')",
   "eventTime": "Etkinliğin asıl saati (Örn: '14:25')",
-  "targetTime": "YYYY-MM-DDTHH:mm:00 (Alarmın çalacağı tam ISO zamanı)",
-  "explanation": "Kullanıcıya yapılacak nazik teyit açıklaması (Örn: 'Saat 14:25 için hatırlatıcını kurdum. Vakti geldiğinde hem mesajla hem de arayarak haber vereceğim.')",
-  "type": "exam|appointment|custom|special_day",
-  "requiresAck": true
-}
+    "targetTime": "YYYY-MM-DDTHH:mm:00+03:00 (Türkiye saatiyle +03:00 ekli tam ISO zamanı)",
+    "explanation": "Kullanıcıya yapılacak nazik teyit açıklaması",
+    "type": "exam|appointment|custom|special_day",
+    "requiresAck": true
+  }
 
 SADECE geçerli JSON formatında döndür.
 `;

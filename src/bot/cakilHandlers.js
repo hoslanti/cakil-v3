@@ -270,10 +270,15 @@ Komut Listesi:
     if (reminderIntent && reminderIntent.isReminder) {
       const { title, description, targetTime, type, requiresAck, explanation } = reminderIntent;
       
-      reminderRepo.addReminder(chatId, type || 'custom', title, description || text, targetTime, 0, null, requiresAck ? 1 : 0);
-      console.log(`⏰ [HATIRLATICI EKLENDİ] ID (${chatId}): ${title} -> ${targetTime}`);
+      let cleanTargetTime = targetTime;
+      if (!cleanTargetTime.includes('+') && !cleanTargetTime.includes('Z')) {
+        cleanTargetTime += '+03:00';
+      }
+      
+      reminderRepo.addReminder(chatId, type || 'custom', title, description || text, cleanTargetTime, 0, null, requiresAck ? 1 : 0);
+      console.log(`⏰ [HATIRLATICI EKLENDİ] ID (${chatId}): ${title} -> ${cleanTargetTime}`);
 
-      const dateDisplay = new Date(targetTime).toLocaleString('tr-TR', {
+      const dateDisplay = new Date(cleanTargetTime).toLocaleString('tr-TR', {
         timeZone: 'Europe/Istanbul',
         day: 'numeric',
         month: 'long',
