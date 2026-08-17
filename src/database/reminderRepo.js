@@ -4,7 +4,7 @@ export const reminderRepo = {
   // Yeni hatırlatıcı ekle
   addReminder(chatId, type, title, description, targetTime, isRecurring = 0, recurringCron = null, requiresAck = 0) {
     const stmt = db.prepare(`
-      INSERT INTO reminders (chat_id, type, title, description, target_time, is_recurring, recurring_cron, status, requires_ack, ack_status, retry_count)
+      INSERT INTO reminders (chat_id, type, title, description, target_time, is_recurring, cron_expr, status, requires_ack, ack_status, retry_count)
       VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', ?, 'pending', 0)
     `);
     const result = stmt.run(chatId, type, title, description, targetTime, isRecurring, recurringCron, requiresAck);
@@ -64,7 +64,7 @@ export const reminderRepo = {
   // Bugün ilaç içildi mi kontrol et
   getTodayMedicineStatus(chatId, todayDate) {
     const row = db.prepare(`
-      SELECT status, logged_at FROM medicine_logs 
+      SELECT status, taken_at FROM medicine_logs 
       WHERE chat_id = ? AND date = ? 
       ORDER BY id DESC LIMIT 1
     `).get(chatId, todayDate);
