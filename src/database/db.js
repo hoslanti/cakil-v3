@@ -32,7 +32,8 @@ export function initDatabase() {
       category TEXT,
       fact TEXT,
       source_message TEXT,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `);
 
@@ -81,6 +82,7 @@ export function initDatabase() {
 
   // Güvenli Migrasyonlar (Eğer eski tabloda kolonlar eksikse ekle)
   const columnsToAdd = [
+    { table: 'memories', col: 'updated_at', type: 'DATETIME DEFAULT CURRENT_TIMESTAMP' },
     { table: 'reminders', col: 'requires_ack', type: 'INTEGER DEFAULT 0' },
     { table: 'reminders', col: 'retry_count', type: 'INTEGER DEFAULT 0' },
     { table: 'reminders', col: 'ack_status', type: "TEXT DEFAULT 'pending'" },
