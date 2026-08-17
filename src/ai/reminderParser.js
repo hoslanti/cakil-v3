@@ -6,8 +6,21 @@ export async function parseReminderIntent(userMessage, recentHistory = []) {
   const lower = userMessage.toLowerCase();
   
   // Bariz alakasız soru filtreleri
-  if (lower.includes('saat kaç') || lower.includes('nasılsın') || lower.includes('kimsin')) {
+  if (lower.includes('saat kaç') || lower.includes('nasılsın') || lower.includes('kimsin') || lower.includes('naber')) {
     return null;
+  }
+
+  // Hatırlatıcı / alarm olabilecek ipuçları (Yoksa ekstra yapay zeka sorgusu atıp 3-4 saniye gecikme yaşatma!)
+  const REMINDER_KEYWORDS = [
+    'hatırla', 'alarm', 'kur', 'dakika', ' dk', 'yarın', 'sınav', 
+    'randevu', 'fırın', 'ara ', 'beni ara', 'uyandır', 'gün sonra', 'vakit',
+    'ertele', 'iptal'
+  ];
+  const hasTimePattern = /\b\d{1,2}[:.]\d{2}\b/.test(lower) || /\b\d{1,2}\s*(dk|dakika|saat)\b/.test(lower);
+  const hasClue = REMINDER_KEYWORDS.some(kw => lower.includes(kw)) || hasTimePattern;
+
+  if (!hasClue) {
+    return null; // Normal sohbet, doğrudan ve anında yanıta geç
   }
 
   const now = new Date();

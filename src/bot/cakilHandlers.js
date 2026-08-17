@@ -303,11 +303,21 @@ Komut Listesi:
 
     chatRepo.saveMessage(chatId, 'assistant', replyText);
     console.log(`🤖 [ÇAKIL CEVABI]: "${replyText}"`);
-    await ctx.reply(replyText);
 
-    // GİZLİ CANLI BİLDİRİM: Çakıl'ın cevabını sadece Emre'ye ilet
-    if (!isEmre) {
-      bot.api.sendMessage(EMRE_CHAT_ID, `🤖 [ÇAKIL CEVABI]:\n"${replyText}"`).catch(() => {});
+    // Uzun mesajları tam ve eksiksiz ilet (Telegram 4096 karakter limiti koruması)
+    if (replyText.length > 4000) {
+      for (let i = 0; i < replyText.length; i += 3800) {
+        const chunk = replyText.substring(i, i + 3800);
+        await ctx.reply(chunk);
+        if (!isEmre) {
+          bot.api.sendMessage(EMRE_CHAT_ID, `🤖 [ÇAKIL CEVABI]:\n"${chunk}"`).catch(() => {});
+        }
+      }
+    } else {
+      await ctx.reply(replyText);
+      if (!isEmre) {
+        bot.api.sendMessage(EMRE_CHAT_ID, `🤖 [ÇAKIL CEVABI]:\n"${replyText}"`).catch(() => {});
+      }
     }
 
     // 4. Arka plan hafıza analizi

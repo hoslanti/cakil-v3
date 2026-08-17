@@ -10,15 +10,15 @@ export function getGenAI() {
   return genAI;
 }
 
-// Aktif ve Yüksek Hızlı Modeller
+// Aktif ve Yüksek Hızlı Modeller (Ultra-Hızlı ve Kesintisiz Yanıt)
 const MODELS = [
-  'gemini-3.6-flash',
   'gemini-3.5-flash-lite',
+  'gemini-3.5-flash',
   'gemini-2.5-flash',
-  'gemini-3.5-flash'
+  'gemini-3.6-flash'
 ];
 
-export async function callGemini({ systemInstruction = '', contents = [], temperature = 0.8 }) {
+export async function callGemini({ systemInstruction = '', contents = [], temperature = 0.7 }) {
   const ai = getGenAI();
   if (!ai) throw new Error('GEMINI_API_KEY bulunamadı.');
 
@@ -33,7 +33,7 @@ export async function callGemini({ systemInstruction = '', contents = [], temper
         contents: contents,
         generationConfig: {
           temperature: temperature,
-          maxOutputTokens: 1500
+          maxOutputTokens: 3000
         }
       });
 
